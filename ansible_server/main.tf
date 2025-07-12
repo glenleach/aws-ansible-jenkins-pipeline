@@ -65,7 +65,7 @@ resource "aws_security_group" "ansible_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_public_IP_address]
+    cidr_blocks = [var.jenkins_server_public_ip, var.my_public_IP_address]
   }
 
   egress {

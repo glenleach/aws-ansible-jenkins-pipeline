@@ -21,3 +21,8 @@ variable "my_public_IP_address" {
   description = "Your public IP address in CIDR notation (e.g., 1.2.3.4/32)"
   type        = string
 }
+
+variable "jenkins_server_public_ip" {
+  description = "Public IP address of the Jenkins server in CIDR notation (e.g., 1.2.3.4/32)"
+  type        = string
+}
