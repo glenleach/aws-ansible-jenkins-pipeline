@@ -21,8 +21,3 @@ variable "my_public_IP_address" {
   description = "Your public IP address in CIDR notation (e.g., 1.2.3.4/32)"
   type        = string
 }
-
-variable "jenkins_public_key" {
-  description = "Public SSH key for Jenkins to access the Ansible server"
-  type        = string
-}
