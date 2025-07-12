@@ -1,5 +1,39 @@
 provider "aws" {
-  region = "eu-west-2"
+  region = var.aws_region
+}
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+resource "tls_private_key" "ansible_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "ansible_key" {
+  key_name   = "ansible-server-key"
+  public_key = tls_private_key.ansible_key.public_key_openssh
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 }
 
 resource "aws_iam_role" "ansible_role" {
@@ -31,21 +65,51 @@ resource "aws_iam_instance_profile" "ansible_instance_profile" {
   role = aws_iam_role.ansible_role.name
 }
 
+resource "aws_security_group" "ansible_ssh" {
+  name        = "ansible-ssh-sg"
+  description = "Allow SSH access to Ansible server"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_public_IP_address]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "ansible_ec2" {
-  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI (us-east-1)
-  instance_type = "t2.micro"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+  key_name      = aws_key_pair.ansible_key.key_name
+  vpc_security_group_ids = [aws_security_group.ansible_ssh.id]
+  subnet_id     = tolist(data.aws_subnets.default.ids)[0]
 
   iam_instance_profile = aws_iam_instance_profile.ansible_instance_profile.name
 
-  user_data = <<-EOF
-    #!/bin/bash
-    yum update -y
-    amazon-linux-extras install epel -y
-    yum install -y ansible python3 python3-pip
-    pip3 install boto boto3
-  EOF
+  user_data = templatefile("${path.module}/user_data.sh", {
+    private_key_b64 = base64encode(tls_private_key.ansible_key.private_key_pem)
+  })
 
   tags = {
     Name = "ansible-ec2-instance"
   }
+}
+
+resource "local_file" "ansible_private_key" {
+  content              = tls_private_key.ansible_key.private_key_pem
+  filename             = "${path.root}/ansible-server-key.pem"
+  file_permission      = "0600"
+  directory_permission = "0700"
+}
+
+output "ansible_server_public_ip" {
+  value = aws_instance.ansible_ec2.public_ip
 }
