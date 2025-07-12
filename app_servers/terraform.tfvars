@@ -1,2 +1,2 @@
-key_name = "ansible-server-key"
-ansible_server_public_ip_address = "3.10.53.98/32"
+key_name = "ansible-app-servers"
+ansible_server_public_ip_address = "18.133.75.61/32"
