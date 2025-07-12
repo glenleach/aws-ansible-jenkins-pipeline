@@ -6,3 +6,4 @@ target
 *.log
 *.pem
 *.exe
+.terraform.lock.hcl
