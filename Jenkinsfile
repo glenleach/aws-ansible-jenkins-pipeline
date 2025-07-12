@@ -8,10 +8,10 @@ pipeline {
       steps {
         script {
           echo "copying all neccessary files to ansible control node"
-          sshagent(['ansible-server-key']) {
+          sshagent(['jenkins-ansible']) {
             sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
 
-            withCredentials([sshUserPrivateKey(credentialsId: 'ec2-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'ansible-app-servers', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
               sh 'scp $keyfile root@$ANSIBLE_SERVER:/root/ssh-key.pem'
             }
           }
@@ -23,11 +23,12 @@ pipeline {
         script {
           echo "calling ansible playbook to configure ec2 instances"
           def remote = [:]
-          remote.name = "ansible-server"
+          remote.name = "ansible-ec2-instance"
+          remote.port = 22
           remote.host = ANSIBLE_SERVER
           remote.allowAnyHosts = true
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ansible', keyFileVarible: 'keyfile', usernameVariable: 'user')]) {
             remote.user = user
             remote.identityFile = keyfile
             sshScript remote: remote, script: "prepare-ansible-server.sh"

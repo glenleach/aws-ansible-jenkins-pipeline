@@ -13,15 +13,6 @@ data "aws_subnets" "default" {
   }
 }
 
-resource "tls_private_key" "ansible_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "ansible_key" {
-  key_name   = "ansible-server-key"
-  public_key = tls_private_key.ansible_key.public_key_openssh
-}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -88,27 +79,21 @@ resource "aws_security_group" "ansible_ssh" {
 resource "aws_instance" "ansible_ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name      = aws_key_pair.ansible_key.key_name
+  # Use a stable key_name if needed, or remove if not required
   vpc_security_group_ids = [aws_security_group.ansible_ssh.id]
   subnet_id     = tolist(data.aws_subnets.default.ids)[0]
 
   iam_instance_profile = aws_iam_instance_profile.ansible_instance_profile.name
 
-  user_data = templatefile("${path.module}/user_data.sh", {
-    private_key_b64 = base64encode(tls_private_key.ansible_key.private_key_pem)
-  })
+  key_name  = "jenkins-ansible"
+  user_data = templatefile("${path.module}/user_data.sh", {})
 
   tags = {
     Name = "ansible-ec2-instance"
   }
 }
 
-resource "local_file" "ansible_private_key" {
-  content              = tls_private_key.ansible_key.private_key_pem
-  filename             = "${path.root}/ansible-server-key.pem"
-  file_permission      = "0600"
-  directory_permission = "0700"
-}
+
 
 output "ansible_server_public_ip" {
   value = aws_instance.ansible_ec2.public_ip
