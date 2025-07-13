@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REMOTE_USER = "ubuntu"
-        REMOTE_HOST = "13.42.51.224"   // <-- your Ansible EC2 instance
+        REMOTE_HOST = "3.8.130.237"   // <-- your Ansible EC2 instance
     }
 
     stages {
