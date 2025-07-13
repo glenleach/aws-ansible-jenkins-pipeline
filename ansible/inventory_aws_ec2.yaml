@@ -1,16 +1,21 @@
 plugin: aws_ec2
 regions:
   - eu-west-2
+
 filters:
   instance-state-name: running
-  tag:app-server: "*" 
+  tag:app-server: "*"
+
 compose:
   ansible_host: public_ip_address
-groups:
-  app_server: "'app-server' in tags"
+
+keyed_groups:
+  - key: tags.app-server
+    prefix: tag_app_server_
+
 hostnames:
-  - dns-name
-  - private-ip-address
+  - public-ip-address
+
 
 
 
