@@ -9,3 +9,5 @@ keyed_groups:
     prefix: tag
   - key: instance_type
     prefix: instance_type
+hostnames:
+  - public_ip_address
