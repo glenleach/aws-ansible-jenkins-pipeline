@@ -5,7 +5,7 @@
 To clone this repository, run:
 
 ```sh
-git clone https://github.com/<your-username>/<your-repo-name>.git
+git clone https://github.com/glenleach/aws-ansible-jenkins-pipeline
 cd <your-repo-name>
 ```
 
