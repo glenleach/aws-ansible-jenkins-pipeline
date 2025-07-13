@@ -10,4 +10,4 @@ compose:
 destination_variable: public_ip_address
 keyed_groups:
   - key: tags.Name
-    prefix: tag_Name_
+    prefix: tag_Name
