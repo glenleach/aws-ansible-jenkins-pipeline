@@ -9,8 +9,6 @@ git clone https://github.com/glenleach/aws-ansible-jenkins-pipeline
 cd <your-repo-name>
 ```
 
-Replace `<your-username>` and `<your-repo-name>` with your actual GitHub username and the repository name (e.g., aws-ansible-jenkins-pipeline-demo).
-
 **Project Update:**
 - The project now targets only specific app-server instances within a region (using tags/filters), rather than all instances.
 - The Nginx application is deployed behind an AWS Application Load Balancer for high availability and scalability.
