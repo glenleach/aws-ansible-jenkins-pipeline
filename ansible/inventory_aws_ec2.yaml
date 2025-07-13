@@ -3,12 +3,11 @@ regions:
   - eu-west-2
 filters:
   instance-state-name: running
-  tag:app-server: "app-server"         # <-- filters instances with the tag 'app-server'
+  tag:app-server: "*" 
 compose:
   ansible_host: public_ip_address
-keyed_groups:
-  - key: tags.app-server      # create group(s) based on app-server tag value
-    prefix: app_server_       # group names will be like app_server_<value>
+groups:
+  app_server: "'app-server' in tags"
 hostnames:
   - dns-name
   - private-ip-address
