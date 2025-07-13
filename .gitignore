@@ -7,3 +7,6 @@ target
 *.pem
 *.exe
 .terraform.lock.hcl
+.terraform.tfplan
+.terraform.tfstate.backup
+.terraform.tfstate.lock.info
