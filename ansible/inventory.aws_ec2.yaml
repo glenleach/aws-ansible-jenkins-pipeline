@@ -4,8 +4,8 @@ regions:
 
 filters:
   instance-state-name: running
-  tag:app-server:
-    - "true"
+  tag:Name:
+    - "app-server"
 
 compose:
   ansible_host: public_ip_address
