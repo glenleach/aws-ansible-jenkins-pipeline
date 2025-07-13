@@ -1,5 +1,5 @@
 - name: Install Docker
-  hosts: all
+  hosts: app_server_true
   become: yes
   tasks:
     - name: Install Docker
