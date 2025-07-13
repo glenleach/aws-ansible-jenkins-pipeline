@@ -1,4 +1,15 @@
 # DevOps Bootcamp Demo: Automated AWS Ansible Server, EC2 App Servers with Load Balancer, and Jenkins-Driven Nginx Deployment
+..
+## Getting Started
+
+To clone this repository, run:
+
+```sh
+git clone https://github.com/<your-username>/<your-repo-name>.git
+cd <your-repo-name>
+```
+
+Replace `<your-username>` and `<your-repo-name>` with your actual GitHub username and the repository name (e.g., aws-ansible-jenkins-pipeline-demo).
 
 **Project Update:**
 - The project now targets only specific app-server instances within a region (using tags/filters), rather than all instances.
