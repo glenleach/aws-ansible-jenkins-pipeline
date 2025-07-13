@@ -55,7 +55,8 @@ pipeline {
                         remote.user = user
                         remote.identityFile = keyfile
                         sshScript remote: remote, script: "prepare-ansible-server.sh"
-                        sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
+                        sshCommand remote: remote, command: "ansible-playbook -i /home/ubuntu/inventory.aws_ec2.yaml /home/ubuntu/my-playbook.yaml"
+
                     }
                 }
             }
