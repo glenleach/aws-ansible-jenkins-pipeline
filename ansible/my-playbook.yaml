@@ -1,33 +1,36 @@
 - name: Install Docker
-  hosts: tag_Name_app_server
+  hosts: tag_Name_app-server
   become: yes
   tasks:
     - name: Install Docker
-      yum:
-        name: docker
-        update_cache: yes
+      apt:
+        name: docker.io
         state: present
-    - name: Start docker daemon
-      systemd:
-        name: docker
-        state: started
+        update_cache: yes
 
-- name: Install Docker-compose
-  hosts: tag_Name_app_server
+- name: Install Docker Compose
+  hosts: tag_Name_app-server
   become: yes
   tasks:
-    - name: Create docker-compose directory
-      file:
-        path: ~/.docker/cli-plugins
-        state: directory
-        mode: '0755'
-    - name: Get architecture of remote machine
-      shell: uname -m
-      register: remote_arch
-      changed_when: false
-    - name: Install docker-compose
-      get_url:
-        url: "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-{{ remote_arch.stdout }}"
-        dest: ~/.docker/cli-plugins/docker-compose
-        mode: '0755'
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        state: present
 
+- name: Run Nginx container
+  hosts: tag_Name_app-server
+  become: yes
+  tasks:
+    - name: Pull Nginx image
+      docker_image:
+        name: nginx
+        source: pull
+
+    - name: Run Nginx container
+      docker_container:
+        name: nginx
+        image: nginx
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:80"
