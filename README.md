@@ -19,6 +19,31 @@ The project demonstrates the following:
   - One key pair for the app servers (e.g., `ec2-app-server-key`)
 - Download and keep the private keys safe. You will reference these key names in your `terraform.tfvars` files.
 
+## Example terraform.tfvars Files
+
+**app_servers/terraform.tfvars**
+```hcl
+# Name of the SSH key pair to use for the app server EC2 instances (must exist in AWS)
+key_name = "ec2-app-server-key"
+
+# The public IP address of the Ansible server, in CIDR notation (e.g., 1.2.3.4/32)
+ansible_server_public_ip_address = "203.0.113.10/32"
+```
+
+**ansible_server/terraform.tfvars**
+```hcl
+# Name of the SSH key pair to use for the Ansible server EC2 instance (must exist in AWS)
+key_name = "ansible-server-key"
+
+# The public IP address of the Jenkins server, in CIDR notation (e.g., 1.2.3.4/32)
+jenkins_server_public_ip = "203.0.113.20/32"
+
+# Your own public IP address, in CIDR notation (for admin SSH access)
+my_public_IP_address = "198.51.100.5/32"
+```
+
+Copy these examples to your own `terraform.tfvars` files and update the values for your environment.
+
 ## Step-by-Step Instructions
 
 ### 1. Set up the Ansible Server
@@ -58,6 +83,8 @@ The project demonstrates the following:
 - Add SSH credentials for both the Ansible server and app servers.
 - Configure the Jenkins pipeline using the provided `Jenkinsfile`.
 - Ensure Jenkins can SSH into the Ansible server using the correct key.
+
+**Before running the pipeline, ensure that the Jenkinsfile has the correct public IP address for the Ansible server. After adjusting all entries, push your changes to your remote repository and then run your pipeline.**
 
 ### 4. Run the Jenkins Pipeline
 - Trigger the Jenkins pipeline.

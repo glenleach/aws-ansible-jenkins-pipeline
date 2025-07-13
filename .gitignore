@@ -11,3 +11,8 @@ target
 .terraform.tfstate.backup
 .terraform.tfstate.lock.info
 terraform.tfstate
+
+# Ignore all terraform.tfvars files
+terraform.tfvars
+app_servers/terraform.tfvars
+ansible_server/terraform.tfvars
