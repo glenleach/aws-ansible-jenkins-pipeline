@@ -4,18 +4,15 @@ regions:
 
 filters:
   instance-state-name: running
-  tag:app-server: "*"
+  tag:app-server: true
 
 compose:
   ansible_host: public_ip_address
 
 keyed_groups:
   - key: tags.app-server
-    prefix: tag_app_server_
+    prefix: tag_app-server_
 
 hostnames:
-  - public-ip-address
-
-
-
-
+  - dns-name
+  - private-ip-address
