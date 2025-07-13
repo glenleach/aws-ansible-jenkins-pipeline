@@ -2,24 +2,14 @@
 - name: Setup Docker and run Nginx container
   hosts: tag_Name_app_server
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - name: Update package cache on Debian/Ubuntu
-      apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
     - name: Update package cache on RedHat/Amazon Linux
       yum:
-        name: "*"
-        state: latest
+        update_cache: yes
       when: ansible_os_family == "RedHat"
-
-    - name: Install Docker on Debian/Ubuntu
-      apt:
-        name: docker.io
-        state: present
-      when: ansible_os_family == "Debian"
 
     - name: Install Docker on RedHat/Amazon Linux
       yum:
@@ -27,25 +17,20 @@
         state: present
       when: ansible_os_family == "RedHat"
 
-    - name: Install python3-pip on Debian/Ubuntu
-      apt:
-        name: python3-pip
-        state: present
-      when: ansible_os_family == "Debian"
-
     - name: Install python3-pip on RedHat/Amazon Linux
       yum:
         name: python3-pip
         state: present
       when: ansible_os_family == "RedHat"
 
-    - name: Install Docker Python SDK (docker module)
+    - name: Install Docker Python SDK using pip3
       pip:
         name: docker
         executable: pip3
+      when: ansible_os_family == "RedHat"
 
     - name: Start and enable Docker service
-      service:
+      systemd:
         name: docker
         state: started
         enabled: yes
@@ -55,10 +40,12 @@
         name: nginx
         source: pull
 
-    - name: Run Nginx container
+    - name: Run nginx container
       docker_container:
         name: nginx
-        image: nginx
+        image: nginx:latest
         state: started
+        restart_policy: always
         ports:
           - "80:80"
+
