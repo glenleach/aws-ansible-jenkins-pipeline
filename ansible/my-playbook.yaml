@@ -4,30 +4,24 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-  pre_tasks:
-    - name: Ensure Python 2 is installed (for yum module)
-      raw: |
-        if ! command -v python2 &>/dev/null; then
-          yum install -y python2
-        fi
-      when: ansible_os_family == "RedHat"
-
   tasks:
-    - name: Update package cache on RedHat/Amazon Linux
+    - name: Install Docker using amazon-linux-extras (Amazon Linux 2)
+      shell: |
+        amazon-linux-extras install -y docker
+      args:
+        creates: /usr/bin/docker
+      when: ansible_distribution == "Amazon"
+
+    - name: Install Docker on RedHat (not Amazon Linux)
       yum:
-        update_cache: yes
-      when: ansible_os_family == "RedHat"
+        name: docker
+        state: present
+      when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon"
 
     - name: Update package cache on Debian/Ubuntu
       apt:
         update_cache: yes
       when: ansible_os_family == "Debian"
-
-    - name: Install Docker on RedHat/Amazon Linux
-      yum:
-        name: docker
-        state: present
-      when: ansible_os_family == "RedHat"
 
     - name: Install Docker on Debian/Ubuntu
       apt:
@@ -52,7 +46,7 @@
         name: docker
         executable: pip3
 
-    - name: Start and enable Docker service on RedHat
+    - name: Start and enable Docker service on RedHat/Amazon Linux
       systemd:
         name: docker
         state: started
