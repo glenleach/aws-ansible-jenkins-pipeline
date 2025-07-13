@@ -1,5 +1,5 @@
 - name: Install Docker
-  hosts: app_server
+  hosts: tag_app-server_true
   become: yes
   tasks:
     - name: Install Docker
@@ -13,7 +13,7 @@
         state: started
 
 - name: Install Docker-compose
-  hosts: all
+  hosts: tag_app-server_true
   tasks:
     - name: Create docker-compose directory
       file:
