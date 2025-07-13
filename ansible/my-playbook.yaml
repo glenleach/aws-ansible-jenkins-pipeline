@@ -1,5 +1,5 @@
 - name: Install Docker
-  hosts: tag_Name_app_server       # updated group name, no dash, single underscore
+  hosts: tag_Name_app_server
   become: yes
   tasks:
     - name: Install Docker
@@ -13,14 +13,14 @@
         state: started
 
 - name: Install Docker-compose
-  hosts: tag_Name_app_server       # make consistent here too
+  hosts: tag_Name_app_server
   become: yes
   tasks:
     - name: Create docker-compose directory
       file:
         path: ~/.docker/cli-plugins
         state: directory
-        mode: '0755'                # safer permission
+        mode: '0755'
     - name: Get architecture of remote machine
       shell: uname -m
       register: remote_arch
