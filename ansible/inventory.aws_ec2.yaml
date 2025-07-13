@@ -4,7 +4,7 @@ regions:
 
 filters:
   instance-state-name: running
-  tag:app-server: true
+  tag:app-server: ["true"]   # FIXED: value must be a list of strings
 
 compose:
   ansible_host: public_ip_address
