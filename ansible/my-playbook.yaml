@@ -48,6 +48,11 @@
         state: present
       when: ansible_os_family == "Debian"
 
+    - name: Install compatible urllib3 for Docker SDK
+      pip:
+        name: "urllib3<2.0"
+        executable: pip3
+
     - name: Install Docker Python SDK using pip3
       pip:
         name: docker
