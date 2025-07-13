@@ -104,7 +104,7 @@ resource "aws_launch_template" "app_server" {
   name_prefix   = "app-server-"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
-  key_name      = "ansible-app-servers"
+  key_name      = var.key_name
 
   vpc_security_group_ids = [aws_security_group.app_server_sg.id]
 

@@ -16,7 +16,6 @@ variable "availability_zone" {
   default     = "eu-west-2a"
 }
 
-
 variable "my_public_IP_address" {
   description = "Your public IP address in CIDR notation (e.g., 1.2.3.4/32)"
   type        = string
@@ -24,5 +23,10 @@ variable "my_public_IP_address" {
 
 variable "jenkins_server_public_ip" {
   description = "Public IP address of the Jenkins server in CIDR notation (e.g., 1.2.3.4/32)"
+  type        = string
+}
+
+variable "key_name" {
+  description = "Name of the SSH key pair to use for the Ansible server EC2 instance"
   type        = string
 }

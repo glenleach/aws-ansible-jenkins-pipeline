@@ -85,7 +85,7 @@ resource "aws_instance" "ansible_ec2" {
 
   iam_instance_profile = aws_iam_instance_profile.ansible_instance_profile.name
 
-  key_name  = "jenkins-ansible"
+  key_name  = var.key_name
   user_data = templatefile("${path.module}/user_data.sh", {})
 
   tags = {
