@@ -25,7 +25,7 @@ pipeline {
                         echo "Copying Ansible files to server..."
                         scp -o StrictHostKeyChecking=no \
                           ansible/ansible.cfg \
-                          ansible/inventory_aws_ec2.yaml \
+                          ansible/inventory.aws_ec2.yaml \
                           ansible/my-playbook.yaml \
                           $REMOTE_USER@$REMOTE_HOST:/home/ubuntu/
                     '''
