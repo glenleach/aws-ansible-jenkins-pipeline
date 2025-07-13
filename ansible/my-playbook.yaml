@@ -4,9 +4,17 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
+  pre_tasks:
+    - name: Ensure Python 2 is installed (for yum module)
+      raw: |
+        if ! command -v python2 &>/dev/null; then
+          yum install -y python2
+        fi
+      when: ansible_os_family == "RedHat"
+
   tasks:
     - name: Update package cache on RedHat/Amazon Linux
-      dnf:
+      yum:
         update_cache: yes
       when: ansible_os_family == "RedHat"
 
@@ -16,7 +24,7 @@
       when: ansible_os_family == "Debian"
 
     - name: Install Docker on RedHat/Amazon Linux
-      dnf:
+      yum:
         name: docker
         state: present
       when: ansible_os_family == "RedHat"
@@ -28,7 +36,7 @@
       when: ansible_os_family == "Debian"
 
     - name: Install python3-pip on RedHat/Amazon Linux
-      dnf:
+      yum:
         name: python3-pip
         state: present
       when: ansible_os_family == "RedHat"
