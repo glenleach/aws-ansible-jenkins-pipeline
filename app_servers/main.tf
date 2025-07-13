@@ -38,6 +38,14 @@ resource "aws_security_group" "app_server_sg" {
     cidr_blocks = [var.ansible_server_public_ip_address]
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP access from anywhere"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
