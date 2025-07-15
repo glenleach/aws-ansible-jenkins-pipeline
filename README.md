@@ -1,13 +1,5 @@
 # DevOps Bootcamp Demo: Automated AWS Ansible Server, EC2 App Servers with Load Balancer, and Jenkins-Driven Nginx Deployment
-..
-## Getting Started
 
-To clone this repository, run:
-
-```sh
-git clone https://github.com/glenleach/aws-ansible-jenkins-pipeline
-cd <your-repo-name>
-```
 ## Overview
 **Project Update:**
 - The project now targets only specific app-server instances within a region (using tags/filters), rather than all instances.
@@ -20,6 +12,15 @@ The project demonstrates the following:
 - Configuration management and application deployment using Ansible
 - CI/CD pipeline integration with Jenkins
 - Running a Dockerized Nginx application on AWS EC2 instances managed by an Auto Scaling Group and behind an Application Load Balancer
+
+## Getting Started
+
+To clone this repository, run:
+
+```sh
+git clone https://github.com/glenleach/aws-ansible-jenkins-pipeline
+cd <your-repo-name>
+```
 
 ## Prerequisites
 
