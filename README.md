@@ -110,11 +110,8 @@ Copy these examples to your own `terraform.tfvars` files and update the values f
 ## Purpose
 This project is designed for educational purposes only, to help students learn and practice real-world DevOps workflows and tools in a cloud environment.
 
-## License
-**This project is for personal training purposes only as part of DevOps training for Techworld with Nana.**
+License
 
-**It is not for redistribution or commercial use. All rights reserved.**
+Copyright © Techworld with Nana. All rights reserved.
 
----
-
-© 2024 Techworld with Nana. All rights reserved.
+This project is provided for personal training and educational purposes only. No part of this project may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the copyright owner, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law
